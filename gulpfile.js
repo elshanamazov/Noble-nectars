@@ -110,9 +110,14 @@ exports.default = gulp.parallel(
 	html
 );
 
+const toProd = done => {
+	isProd = true;
+	done();
+};
+
 const build = gulp.series(
 	gulp.parallel(styles, scripts, fonts, icons, html),
-	gulp.parallel(images, webpImages)
+	gulp.parallel(images, webpImages, toProd)
 );
 
 exports.build = build;
