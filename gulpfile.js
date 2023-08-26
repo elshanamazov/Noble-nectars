@@ -1,4 +1,3 @@
-const { series } = require('gulp');
 const gulp = require('gulp');
 const browserSync = require('browser-sync');
 const concat = require('gulp-concat');
@@ -17,7 +16,7 @@ const webp = require('gulp-webp');
 const server = function () {
 	browserSync({
 		server: {
-			baseDir: 'dist',
+			baseDir: 'docs',
 		},
 	});
 	gulp.watch('src/*.html').on('change', browserSync.reload);
@@ -30,12 +29,12 @@ const styles = function () {
 		.pipe(rename({ suffix: '.min', prefix: '' }))
 		.pipe(autoprefixer())
 		.pipe(cleanCSS())
-		.pipe(gulp.dest('dist/css'))
+		.pipe(gulp.dest('docs/css'))
 		.pipe(browserSync.stream());
 };
 
 const html = function () {
-	return gulp.src('src/*.html').pipe(gulp.dest('dist/'));
+	return gulp.src('src/*.html').pipe(gulp.dest('docs/'));
 };
 
 const scripts = function () {
@@ -43,7 +42,7 @@ const scripts = function () {
 		.src(['node_modules/swiper/swiper-bundle.min.js', 'src/js/**/*.js'])
 		.pipe(concat('main.min.js'))
 		.pipe(uglify())
-		.pipe(gulp.dest('dist/js'))
+		.pipe(gulp.dest('docs/js'))
 		.pipe(browserSync.stream());
 };
 
@@ -51,16 +50,16 @@ const fonts = function () {
 	return gulp
 		.src('src/fonts/*.ttf')
 		.pipe(ttf2woff())
-		.pipe(gulp.dest('dist/fonts'))
+		.pipe(gulp.dest('docs/fonts'))
 		.pipe(gulp.src('src/fonts/*.ttf'))
 		.pipe(ttf2woff2())
-		.pipe(gulp.dest('dist/fonts'));
+		.pipe(gulp.dest('docs/fonts'));
 };
 
 const icons = function () {
 	return gulp
 		.src('src/icons/**/*')
-		.pipe(gulp.dest('dist/icons'))
+		.pipe(gulp.dest('docs/icons'))
 		.pipe(browserSync.stream());
 };
 
@@ -68,7 +67,7 @@ const images = function () {
 	return gulp
 		.src('src/img/**/*')
 		.pipe(imagemin())
-		.pipe(gulp.dest('dist/img'))
+		.pipe(gulp.dest('docs/img'))
 		.pipe(browserSync.stream());
 };
 
@@ -76,7 +75,7 @@ const webpImages = function () {
 	return gulp
 		.src('src/img/**/*.{png,jpg,jpeg}')
 		.pipe(webp())
-		.pipe(gulp.dest('dist/img'));
+		.pipe(gulp.dest('docs/img'));
 };
 
 const watch = function () {
@@ -111,18 +110,9 @@ exports.default = gulp.parallel(
 	html
 );
 
-const toProd = done => {
-	isProd = true;
-	done();
-};
-
-exports.build = series(
-	toProd,
-	styles,
-	scripts,
-	fonts,
-	icons,
-	html,
-	images,
-	webpImages
+const build = gulp.series(
+	gulp.parallel(styles, scripts, fonts, icons, html),
+	gulp.parallel(images, webpImages)
 );
+
+exports.build = build;
