@@ -1,0 +1,10 @@
+/* Base */
+@import "vars";
+@import "mixins";
+@import "fonts";
+@import "settings";
+
+/* Blocks */
+@import "./components/header";
+@import "./components/main";
+@import "./components/footer";

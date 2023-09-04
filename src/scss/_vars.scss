@@ -1,0 +1,13 @@
+:root {
+  // base
+  --font-family: "Arina", sans-serif;
+  --font-family-regular: "Arsenal-Regular", sans-serif;
+  --content-width: 1200px;
+  --container-offset: 20px;
+  --container-width: calc(var(--content-width) + (var(--container-offset) * 2));
+
+  // colors
+  --light-color: #edeae2;
+  --dark-color: #100f0d;
+  --bright-color: #bb9930;
+}
