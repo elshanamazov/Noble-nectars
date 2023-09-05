@@ -1,5 +1,7 @@
 import Swiper from "swiper";
+import { Autoplay } from "swiper/modules";
 
+Swiper.use([Autoplay]);
 document.addEventListener("DOMContentLoaded", function () {
   const swiper = new Swiper(".story__slider", {
     loop: true,
