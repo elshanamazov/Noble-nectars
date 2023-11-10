@@ -58,7 +58,6 @@ function animation() {
       scrollTrigger: {
         trigger: ".tradition__wrap",
         start: "top 0",
-        markers: true,
         // pin: true,
         scrub: true,
       },
